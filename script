@@ -1,0 +1,79 @@
+OSPF area0
+R6
+
+en
+conf t
+router ospf 1
+network 10.0.0.4 0.0.0.3 area 0
+network 10.0.0.0 0.0.0.3 area 0
+passive-interface default
+no passive-interface gigabitEthernet 0/0
+no passive-interface gigabitEthernet 0/1
+default-information originate
+ip route 0.0.0.0 0.0.0.0 10.0.0.6
+do wr
+
+R7
+
+en
+conf t
+router ospf 1
+network 10.0.0.0 0.0.0.3 area 0
+network 10.0.0.8 0.0.0.3 area 0
+passive-interface default
+no passive-interface gigabitEthernet 0/0
+no passive-interface gigabitEthernet 0/2
+ip route 0.0.0.0 0.0.0.0 10.0.0.10
+do wr
+
+R5
+en
+conf t
+router ospf 1
+network 10.0.0.12 0.0.0.3 area 0
+network 10.0.0.8 0.0.0.3 area 0
+network 10.0.0.4 0.0.0.3 area 0
+passive-interface default
+no passive-interface gigabitEthernet 0/0
+no passive-interface gigabitEthernet 0/1
+no passive-interface gigabitEthernet 0/2
+ip route 0.0.0.0 0.0.0.0 10.0.0.14
+do wr
+
+R4
+
+en
+conf t
+router ospf 1
+network 10.0.0.12 0.0.0.3 area 0
+passive-interface default
+no passive-interface gigabitEthernet 0/0
+no passive-interface serial 0/0/1
+ip route 0.0.0.0 0.0.0.0 20.0.0.2
+
+en
+conf t
+router rip
+version 2
+network 20.0.0.0
+AREA RIPV2
+
+R1
+
+en
+conf t
+router rip
+version 2
+network 20.0.0.8
+network 20.0.0.12
+network 20.0.0.0
+network 20.0.0.4
+passive-interface default
+no passive-interface gigabitEthernet 0/0
+no passive-interface gigabitEthernet 0/1
+no passive-interface serial 0/0/1
+no passive-interface serial 0/0/0
+do wr
+
+
+
