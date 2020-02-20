@@ -58,6 +58,14 @@ conf t
 router rip
 version 2
 network 20.0.0.0
+do wr
+
+router rip 
+redistribute ospf 1 metric 1
+exit
+router ospf 1
+redistribute rip subnets
+
 AREA RIPV2
 
 R1
@@ -76,6 +84,100 @@ no passive-interface gigabitEthernet 0/1
 no passive-interface serial 0/0/1
 no passive-interface serial 0/0/0
 do wr
+
+R2
+
+en
+conf t
+router rip
+version 2
+network 20.0.0.8
+passive-interface default
+no passive-interface gigabitEthernet 0/0
+do wr
+
+R3
+
+en
+conf t
+router rip
+version 2
+network 20.0.0.12
+passive-interface default
+no passive-interface gigabitEthernet 0/1
+do wr
+
+R8
+
+en
+conf t
+router rip
+version 2
+network 20.0.0.4
+passive-interface default
+no passive-interface serial 0/0/0
+do wr
+exit
+
+en
+conf t
+router eigrp 1
+network 30.0.0.0 255.255.255.252
+no passive-interface Gig0/0
+exit
+
+en
+conf t
+router eigrp 1
+redistribute rip metric 1 1 1 1 1
+exit
+router rip
+redistribute eigrp 1 metric 1 
+
+
+R9
+
+en
+conf t
+router eigrp 1
+network 30.0.0.0 255.255.255.252
+network 30.0.0.4 255.255.255.252
+network 30.0.0.8 255.255.255.252
+passive-interface default
+no passive-interface gigabitEthernet 0/0
+no passive-interface gigabitEthernet 0/1
+no passive-interface gigabitEthernet 0/2
+do wr
+exit
+
+R10
+
+en
+conf t
+router eigrp 1
+network 30.0.0.4 255.255.255.252
+network 30.0.0.12 255.255.255.252
+passive-interface default
+no passive-interface gigabitEthernet 0/0
+no passive-interface gigabitEthernet 0/1
+do wr
+exit
+
+R11
+
+en
+conf t
+router eigrp 1
+network 30.0.0.8 255.255.255.252
+network 30.0.0.12 255.255.255.252
+passive-interface default
+no passive-interface gigabitEthernet 0/0
+no passive-interface gigabitEthernet 0/2
+do wr
+exit
+
+
+
 
 
 
